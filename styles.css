@@ -1,0 +1,426 @@
+/* =====================================================
+   NON-METAL ELEMENTS LAB  ·  "Neon Chem" theme
+   Midnight ink + electric teal + hot magenta + violet
+   ===================================================== */
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+:root {
+  --ink-950: #050816;
+  --ink-900: #0a1129;
+  --ink-800: #111b3d;
+  --teal: #19f5d0;
+  --magenta: #ff3d9a;
+  --violet: #7b5cff;
+  --amber: #ffc857;
+  --text: #e8f1ff;
+  --muted: #8ea0c9;
+  --mono: ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+::selection { background: var(--magenta); color: #fff; }
+
+/* custom scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--ink-950); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--teal), var(--violet));
+  border-radius: 10px;
+}
+
+/* ===== Page + animated backdrop ===== */
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 48px 16px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Source Sans 3', system-ui, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(123, 92, 255, 0.25), transparent 50%),
+    radial-gradient(ellipse at 85% 90%, rgba(255, 61, 154, 0.18), transparent 50%),
+    linear-gradient(160deg, var(--ink-950), var(--ink-900), #0b0620);
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+/* moving blueprint grid */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(25, 245, 208, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(25, 245, 208, 0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+  animation: gridMove 12s linear infinite;
+}
+
+/* big orbiting atom ring (electrons ride the edge) */
+body::after {
+  content: "";
+  position: fixed;
+  top: 50%; left: 50%;
+  width: 900px; height: 900px;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+  border: 1px dashed rgba(25, 245, 208, 0.16);
+  background:
+    radial-gradient(circle at 50% 0%, var(--teal) 0 6px, transparent 7px),
+    radial-gradient(circle at 100% 50%, var(--magenta) 0 5px, transparent 6px),
+    radial-gradient(circle at 0% 50%, var(--violet) 0 5px, transparent 6px);
+  filter: drop-shadow(0 0 8px var(--teal));
+  animation: orbit 30s linear infinite;
+}
+
+/* floating glow blobs + counter-rotating inner ring */
+html::before {
+  content: "";
+  position: fixed;
+  width: 380px; height: 380px;
+  top: -120px; right: -100px;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 61, 154, 0.45), transparent 70%);
+  filter: blur(40px);
+  animation: blobFloat 14s ease-in-out infinite alternate;
+}
+html::after {
+  content: "";
+  position: fixed;
+  top: 50%; left: 50%;
+  width: 560px; height: 560px;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+  border: 1px solid rgba(123, 92, 255, 0.2);
+  background:
+    radial-gradient(circle at 50% 100%, var(--amber) 0 5px, transparent 6px),
+    radial-gradient(circle at 0% 50%, var(--teal) 0 4px, transparent 5px);
+  filter: drop-shadow(0 0 6px var(--amber));
+  animation: orbitReverse 22s linear infinite;
+}
+
+/* ===== Headings ===== */
+h2, h4 {
+  margin: 0 0 14px;
+  font-family: 'Fraunces', serif;
+}
+
+/* page title */
+body > h2 {
+  position: relative;
+  margin-bottom: 36px;
+  padding-bottom: 14px;
+  font-size: clamp(2.1rem, 6vw, 3.4rem);
+  letter-spacing: 0.02em;
+  text-align: center;
+  background: linear-gradient(90deg, var(--teal), var(--violet), var(--magenta), var(--teal));
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 14px rgba(25, 245, 208, 0.35));
+  animation:
+    shimmer 6s linear infinite,
+    dropIn 0.9s cubic-bezier(.2, .8, .2, 1) both,
+    flicker 7s 1.5s infinite;
+}
+body > h2::after {
+  content: "";
+  position: absolute;
+  left: 50%; bottom: 0;
+  height: 3px;
+  width: 40%;
+  transform: translateX(-50%);
+  border-radius: 3px;
+  background: linear-gradient(90deg, transparent, var(--teal), var(--magenta), transparent);
+  animation: lineGrow 3s ease-in-out infinite alternate;
+}
+
+/* ===== The card (outer form) with rotating neon border ===== */
+form {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 600px;
+  padding: 34px;
+  border: 2px solid transparent;
+  border-radius: 24px;
+  background:
+    linear-gradient(var(--ink-900), var(--ink-900)) padding-box,
+    conic-gradient(from var(--angle), var(--teal), var(--violet), var(--magenta), var(--amber), var(--teal)) border-box;
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(123, 92, 255, 0.2),
+    inset 0 0 40px rgba(25, 245, 208, 0.05);
+  animation:
+    spinBorder 6s linear infinite,
+    riseIn 1s 0.2s cubic-bezier(.2, .8, .2, 1) both;
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+form:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.65),
+    0 0 60px rgba(25, 245, 208, 0.25),
+    inset 0 0 50px rgba(25, 245, 208, 0.08);
+}
+
+/* scanner line sweeping down the card */
+form::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  top: -30%;
+  height: 30%;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, rgba(25, 245, 208, 0.1), transparent);
+  animation: scan 5s linear infinite;
+}
+
+/* nested form (from the HTML) shouldn't become a card in a card */
+form form {
+  overflow: visible;
+  max-width: none;
+  margin-bottom: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  animation: none;
+}
+form form:hover { transform: none; box-shadow: none; }
+form form::before { content: none; }
+
+/* instructions: badge + hint */
+form form h2:first-child {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 5px 14px;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-950);
+  background: linear-gradient(90deg, var(--amber), var(--magenta));
+  border-radius: 999px;
+  box-shadow: 0 0 18px rgba(255, 61, 154, 0.5);
+}
+form form h2:last-child {
+  padding: 12px 14px;
+  font-family: 'Source Sans 3', system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--muted);
+  border-left: 3px solid var(--teal);
+  background: linear-gradient(90deg, rgba(25, 245, 208, 0.08), transparent);
+  border-radius: 0 10px 10px 0;
+}
+
+/* section labels */
+form > h4,
+form > h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+form > h4::after,
+form > h2::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--teal), transparent);
+}
+form > h2 { margin-top: 30px; color: var(--magenta); }
+form > h2::after { background: linear-gradient(90deg, var(--magenta), transparent); }
+
+/* ===== Input ===== */
+input[type="text"] {
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 16px 18px;
+  font-family: var(--mono);
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  caret-color: var(--magenta);
+  background: rgba(17, 27, 61, 0.8);
+  border: 1.5px solid rgba(25, 245, 208, 0.3);
+  border-radius: 14px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s, background 0.3s;
+}
+input[type="text"]::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+  transition: opacity 0.3s, transform 0.3s;
+}
+input[type="text"]:hover { border-color: rgba(25, 245, 208, 0.6); }
+input[type="text"]:focus {
+  border-color: var(--teal);
+  background: rgba(17, 27, 61, 1);
+  transform: scale(1.02);
+  box-shadow:
+    0 0 0 4px rgba(25, 245, 208, 0.15),
+    0 0 28px rgba(25, 245, 208, 0.45);
+}
+input[type="text"]:focus::placeholder {
+  opacity: 0.25;
+  transform: translateX(10px);
+}
+
+/* ===== Button ===== */
+input[type="button"] {
+  width: 100%;
+  padding: 16px 20px;
+  font-family: var(--mono);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-950);
+  cursor: pointer;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(90deg, var(--teal), var(--violet), var(--magenta), var(--teal));
+  background-size: 300% 100%;
+  box-shadow: 0 8px 28px rgba(123, 92, 255, 0.45);
+  animation: gradientSlide 5s linear infinite, glowPulse 2.6s ease-in-out infinite;
+  transition: transform 0.25s ease, letter-spacing 0.3s ease;
+}
+input[type="button"]:hover {
+  transform: translateY(-3px) scale(1.02);
+  letter-spacing: 0.28em;
+  animation-duration: 1.6s, 2.6s;
+}
+input[type="button"]:active {
+  transform: translateY(1px) scale(0.97);
+}
+input[type="button"]:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 4px;
+}
+
+/* ===== Results terminal ===== */
+#result {
+  position: relative;
+  min-height: 150px;
+  padding: 22px 22px 22px 26px;
+  font-family: var(--mono);
+  font-size: 1.02rem;
+  line-height: 2;
+  color: var(--teal);
+  text-shadow: 0 0 10px rgba(25, 245, 208, 0.45);
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 4px),
+    rgba(5, 8, 22, 0.85);
+  border: 1px solid rgba(123, 92, 255, 0.4);
+  border-left: 5px solid var(--magenta);
+  border-radius: 14px;
+  box-shadow: inset 0 0 30px rgba(123, 92, 255, 0.15), 0 0 24px rgba(255, 61, 154, 0.12);
+}
+#result:not(:empty) { animation: resultIn 0.6s cubic-bezier(.2, .8, .2, 1) both; }
+
+/* idle prompt with blinking cursor */
+#result:empty::before {
+  content: "> awaiting element symbol";
+  color: var(--muted);
+  text-shadow: none;
+}
+#result:empty::after {
+  content: "_";
+  color: var(--magenta);
+  animation: blink 1s steps(1) infinite;
+}
+
+/* ===== Keyframes ===== */
+@keyframes gridMove {
+  to { background-position: 48px 48px, 48px 48px; }
+}
+@keyframes orbit {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes orbitReverse {
+  from { transform: translate(-50%, -50%) rotate(360deg); }
+  to   { transform: translate(-50%, -50%) rotate(0deg); }
+}
+@keyframes blobFloat {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-220px, 260px) scale(1.4); }
+}
+@keyframes shimmer { to { background-position: 250% center; } }
+@keyframes spinBorder { to { --angle: 360deg; } }
+@keyframes scan {
+  from { top: -30%; }
+  to   { top: 130%; }
+}
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-40px) scale(0.9); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(50px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes resultIn {
+  from { opacity: 0; transform: translateX(-24px); filter: blur(6px); }
+  to   { opacity: 1; transform: translateX(0); filter: blur(0); }
+}
+@keyframes lineGrow {
+  from { width: 20%; }
+  to   { width: 70%; }
+}
+@keyframes gradientSlide {
+  to { background-position: 300% 0; }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 8px 28px rgba(123, 92, 255, 0.4); }
+  50%      { box-shadow: 0 8px 40px rgba(255, 61, 154, 0.7); }
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+@keyframes flicker {
+  0%, 92%, 96%, 100% { opacity: 1; }
+  94%, 98%           { opacity: 0.55; }
+}
+
+/* ===== Small screens ===== */
+@media (max-width: 480px) {
+  body { padding-top: 32px; }
+  form { padding: 24px 20px; }
+  input[type="button"] { letter-spacing: 0.12em; }
+}
+
+/* ===== Respect reduced-motion settings ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after,
+  html::before, html::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
